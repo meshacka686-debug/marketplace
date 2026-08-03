@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product - Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-primary text-white p-4">
+
+                    <h3 class="mb-1">
+                        <i class="bi bi-plus-circle"></i>
+                        Add New Product
+                    </h3>
+
+                    <p class="mb-0">
+                        Add a product to your Marketplace store.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Category
+                            </label>
+
+                            {{ form.category }}
+
+                            {% if form.category.errors %}
+                                <div class="text-danger small">
+                                    {{ form.category.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Product Name
+                            </label>
+
+                            {{ form.name }}
+
+                            {% if form.name.errors %}
+                                <div class="text-danger small">
+                                    {{ form.name.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Description
+                            </label>
+
+                            {{ form.description }}
+
+                            {% if form.description.errors %}
+                                <div class="text-danger small">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Price (₦)
+                                </label>
+
+                                {{ form.price }}
+
+                                {% if form.price.errors %}
+                                    <div class="text-danger small">
+                                        {{ form.price.errors }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Quantity
+                                </label>
+
+                                {{ form.quantity }}
+
+                                {% if form.quantity.errors %}
+                                    <div class="text-danger small">
+                                        {{ form.quantity.errors }}
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Product Image
+                            </label>
+
+                            {{ form.image }}
+
+                            {% if form.image.errors %}
+                                <div class="text-danger small">
+                                    {{ form.image.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="form-check mb-4">
+
+                            {{ form.available }}
+
+                            <label class="form-check-label">
+                                Product is available
+                            </label>
+
+                        </div>
+
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-check-circle"></i>
+                                Add Product
+
+                            </button>
+
+                            <a href="{% url 'seller_dashboard' %}"
+                               class="btn btn-outline-secondary">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

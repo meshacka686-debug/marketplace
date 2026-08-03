@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Orders
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                My Orders
+            </h2>
+
+            <p class="text-muted mb-0">
+                View and track your marketplace orders.
+            </p>
+        </div>
+
+        <a href="{% url 'products' %}" class="btn btn-primary">
+            <i class="bi bi-shop"></i>
+            Continue Shopping
+        </a>
+
+    </div>
+
+
+    {% if orders %}
+
+        <div class="row g-4">
+
+            {% for order in orders %}
+
+                <div class="col-12">
+
+                    <div class="card border-0 shadow-sm">
+
+                        <div class="card-body">
+
+                            <div class="row align-items-center">
+
+                                <div class="col-md-3">
+
+                                    <small class="text-muted">
+                                        Order Number
+                                    </small>
+
+                                    <h6 class="fw-bold mt-1">
+                                        #{{ order.id }}
+                                    </h6>
+
+                                </div>
+
+
+                                <div class="col-md-2">
+
+                                    <small class="text-muted">
+                                        Date
+                                    </small>
+
+                                    <p class="mb-0 mt-1">
+                                        {{ order.created_at|date:"M d, Y" }}
+                                    </p>
+
+                                </div>
+
+
+                                <div class="col-md-2">
+
+                                    <small class="text-muted">
+                                        Total
+                                    </small>
+
+                                    <h6 class="fw-bold text-primary mt-1">
+                                        ${{ order.total }}
+                                    </h6>
+
+                                </div>
+
+
+                                <div class="col-md-2">
+
+                                    <small class="text-muted">
+                                        Status
+                                    </small>
+
+                                    <div class="mt-1">
+
+                                        {% if order.status == "pending" %}
+
+                                            <span class="badge bg-warning text-dark">
+                                                Pending
+                                            </span>
+
+                                        {% elif order.status == "processing" %}
+
+                                            <span class="badge bg-info">
+                                                Processing
+                                            </span>
+
+                                        {% elif order.status == "shipped" %}
+
+                                            <span class="badge bg-primary">
+                                                Shipped
+                                            </span>
+
+                                        {% elif order.status == "delivered" %}
+
+                                            <span class="badge bg-success">
+                                                Delivered
+                                            </span>
+
+                                        {% elif order.status == "cancelled" %}
+
+                                            <span class="badge bg-danger">
+                                                Cancelled
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge bg-secondary">
+                                                {{ order.status }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+<div class="col-md-3 text-md-end mt-3 mt-md-0">
+{% if order.status != "completed" %}
+
+    <form method="POST"
+          action="{% url 'confirm_order' order.id %}">
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-success btn-sm">
+
+            <i class="bi bi-check-circle"></i>
+
+            Order Received
+
+        </button>
+
+    </form>
+
+    {% elif order.status == "completed" %}
+
+    <span class="badge bg-success fs-6">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+        Successfully Received
+
+    </span>
+
+    {% else %}
+
+    <button
+        class="btn btn-outline-secondary btn-sm"
+        disabled>
+
+        Waiting for Delivery
+
+    </button>
+
+    {% endif %}
+
+</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <i
+                    class="bi bi-bag-x"
+                    style="font-size: 70px;">
+                </i>
+
+                <h4 class="fw-bold mt-4">
+                    No Orders Yet
+                </h4>
+
+                <p class="text-muted">
+                    You haven't placed any orders yet.
+                </p>
+
+                <a
+                    href="{% url 'products' %}"
+                    class="btn btn-primary">
+
+                    <i class="bi bi-shop"></i>
+                    Start Shopping
+
+                </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

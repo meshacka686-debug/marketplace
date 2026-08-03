@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>{% block title %}Marketplace{% endblock %}</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+```
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+
+```
+<div class="container">
+
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="/">
+
+        <img src="{% static 'images/family.png' %}"
+             class="me-2"
+             alt="Marketplace Logo"
+             style="width:45px; height:45px; object-fit:contain;">
+
+        <span class="text-primary fw-bold">
+            MarketPlace
+        </span>
+
+    </a>
+
+
+    <!-- Mobile menu -->
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#menu">
+
+        <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="menu">
+
+
+        <!-- Search -->
+        <form
+    class="mx-auto w-50"
+    method="GET"
+    action="{% url 'products' %}">
+
+            <div class="input-group">
+
+           <input
+    type="search"
+    name="q"
+    class="form-control"
+    placeholder="Search products..."
+    value="{{ request.GET.q }}">
+
+                <button class="btn btn-primary" type="submit">
+
+                    <i class="bi bi-search"></i>
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- Navigation -->
+        <ul class="navbar-nav align-items-lg-center">
+
+
+            <!-- Home -->
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   href="{% url 'home' %}">
+
+                    Home
+
+                </a>
+
+            </li>
+
+
+            <!-- Products -->
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   href="{% url 'products' %}">
+
+                    Products
+
+                </a>
+
+            </li>
+
+
+            {% if user.is_authenticated %}
+
+
+                <!-- Dashboard -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'dashboard' %}">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+<li class="nav-item">
+    <a class="nav-link"
+       href="{% url 'profile' %}">
+        Profile
+    </a>
+</li>
+
+                <!-- My Orders -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'my_orders' %}">
+
+                        My Orders
+
+                    </a>
+
+                </li>
+
+
+                <!-- Cart -->
+                <li class="nav-item">
+
+                    <a class="nav-link position-relative"
+                       href="{% url 'cart' %}">
+
+                        <i class="bi bi-cart3"></i>
+                        Cart
+
+                        {% if cart_count > 0 %}
+
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+                                {{ cart_count }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </a>
+
+                </li>
+
+
+                <!-- Logout -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'logout' %}">
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+
+            {% else %}
+
+
+                <!-- Login -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{% url 'login' %}">
+
+                        Login
+
+                    </a>
+
+                </li>
+
+
+                <!-- Register -->
+                <li class="nav-item">
+
+                    <a class="btn btn-primary ms-lg-3"
+                       href="{% url 'register' %}">
+
+                        Register
+
+                    </a>
+
+                </li>
+
+
+            {% endif %}
+
+        </ul>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<!-- Page Content -->
+
+{% block content %}
+
+{% endblock %}
+
+<!-- Footer -->
+
+<footer class="bg-dark text-white text-center p-4 mt-5">
+
+```
+© 2026 Marketplace
+```
+
+</footer>
+
+<!-- Bootstrap JavaScript -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

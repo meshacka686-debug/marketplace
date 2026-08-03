@@ -1,0 +1,191 @@
+/* Google Font */
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f5f7fb;
+}
+
+/* Navbar */
+
+.navbar{
+    padding:15px 0;
+    background:#fff !important;
+}
+
+.navbar-brand{
+    font-size:28px;
+    font-weight:700;
+}
+
+.navbar-brand img{
+    width:45px;
+    height:45px;
+    border-radius:12px;
+}
+
+/* Search */
+
+.form-control{
+    border-radius:30px 0 0 30px;
+    border:1px solid #ddd;
+}
+
+.input-group .btn{
+    border-radius:0 30px 30px 0;
+}
+
+/* Buttons */
+
+.btn{
+    border-radius:30px;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+/* Hero */
+
+.hero{
+    background:linear-gradient(135deg,#0d6efd,#3d8bfd);
+    border-radius:20px;
+    color:white;
+}
+
+/* Cards */
+
+.card{
+    border:none;
+    border-radius:18px;
+    overflow:hidden;
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.card img{
+    height:220px;
+    object-fit:cover;
+}
+
+/* Product */
+
+.card-title{
+    font-weight:600;
+}
+
+.text-warning{
+    letter-spacing:2px;
+}
+
+.badge{
+    font-size:13px;
+}
+
+/* Sidebar */
+
+.list-group-item{
+    border:none;
+    padding:15px;
+    transition:.3s;
+}
+
+.list-group-item:hover{
+    background:#0d6efd;
+    color:#fff;
+    padding-left:25px;
+}
+
+/* Footer */
+
+footer{
+    background:#111;
+    color:#fff;
+}
+
+/* Category */
+
+.card-header{
+    font-weight:600;
+}
+
+/* Animation */
+
+.card,
+.btn,
+.list-group-item{
+    transition:.3s ease;
+}
+
+/* Product Image Zoom */
+
+.card img:hover{
+    transform:scale(1.05);
+    transition:.5s;
+}
+
+/* Wishlist */
+
+.btn-outline-danger{
+    border-radius:50%;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.navbar-brand{
+    font-size:22px;
+}
+
+.card img{
+    height:180px;
+}
+
+}
+/* Registration Form */
+
+input,
+select,
+textarea{
+
+width:100%;
+
+padding:12px 15px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+margin-top:5px;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+outline:none;
+
+border-color:#0d6efd;
+
+box-shadow:0 0 10px rgba(13,110,253,.2);
+
+}
+
+label{
+
+font-weight:600;
+
+margin-bottom:5px;
+
+}
+
+.card{
+
+border-radius:20px;
+
+}

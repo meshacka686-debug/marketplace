@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row justify-content-center align-items-center">
+
+    <!-- Left Side -->
+
+    <div class="col-lg-5 d-none d-lg-block">
+
+        <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?w=900"
+             class="img-fluid rounded-4 shadow">
+
+    </div>
+
+    <!-- Right Side -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow border-0">
+
+            <div class="card-body p-5">
+
+                <div class="text-center mb-4">
+
+                    <img src="{% static 'images/logo.png' %}"
+                         width="70">
+
+                    <h2 class="fw-bold mt-3">
+
+                        Create Your Account
+
+                    </h2>
+
+                    <p class="text-muted">
+
+                        Join our Marketplace today.
+
+                    </p>
+
+                </div>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>First Name</label>
+
+                            {{ form.first_name }}
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label>Last Name</label>
+
+                            {{ form.last_name }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Username</label>
+
+                        {{ form.username }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Email Address</label>
+
+                        {{ form.email }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Register As</label>
+
+                        {{ form.role }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Phone Number</label>
+
+                        {{ form.phone }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Address</label>
+
+                        {{ form.address }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Password</label>
+
+                        {{ form.password1 }}
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label>Confirm Password</label>
+
+                        {{ form.password2 }}
+
+                    </div>
+
+                    <button class="btn btn-primary w-100 py-3">
+
+                        Create Account
+
+                    </button>
+
+                </form>
+
+                <hr>
+
+                <div class="text-center">
+
+                    Already have an account?
+
+                    <a href="#">
+
+                        Login
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

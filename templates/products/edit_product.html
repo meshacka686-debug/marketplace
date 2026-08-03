@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Product - Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-warning text-dark p-4">
+
+                    <h3 class="mb-1">
+                        <i class="bi bi-pencil-square"></i>
+                        Edit Product
+                    </h3>
+
+                    <p class="mb-0">
+                        Update your product information.
+                    </p>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Category
+                            </label>
+
+                            {{ form.category }}
+
+                            {{ form.category.errors }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Product Name
+                            </label>
+
+                            {{ form.name }}
+
+                            {{ form.name.errors }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Description
+                            </label>
+
+                            {{ form.description }}
+
+                            {{ form.description.errors }}
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Price (₦)
+                                </label>
+
+                                {{ form.price }}
+
+                                {{ form.price.errors }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Quantity
+                                </label>
+
+                                {{ form.quantity }}
+
+                                {{ form.quantity.errors }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Current Image
+                            </label>
+
+                            <br>
+
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}"
+                                     width="180"
+                                     class="img-thumbnail mb-3">
+                            {% endif %}
+
+                            {{ form.image }}
+
+                        </div>
+
+                        <div class="form-check mb-4">
+
+                            {{ form.available }}
+
+                            <label class="form-check-label">
+                                Product Available
+                            </label>
+
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn btn-warning">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Update Product
+
+                            </button>
+
+                            <a href="{% url 'seller_dashboard' %}"
+                               class="btn btn-secondary">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">
+        Checkout
+    </h2>
+
+    <div class="row">
+
+        <!-- Delivery Information -->
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Delivery Information
+                    </h4>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="full_name"
+                                class="form-control"
+                                value="{{ request.user.get_full_name }}"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                name="phone"
+                                class="form-control"
+                                placeholder="08012345678"
+                                required>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Delivery Address
+                            </label>
+
+                            <textarea
+                                name="address"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Enter your delivery address"
+                                required></textarea>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 py-3">
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Place Order
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Order Summary -->
+
+        <div class="col-lg-5">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Order Summary
+                    </h4>
+
+                    {% for item in items %}
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        {% if item.product.image %}
+
+                        <img
+                            src="{{ item.product.image.url }}"
+                            width="60"
+                            height="60"
+                            class="rounded me-3"
+                            style="object-fit: cover;">
+
+                        {% endif %}
+
+                        <div class="flex-grow-1">
+
+                            <h6 class="mb-1">
+                                {{ item.product.name }}
+                            </h6>
+
+                            <small class="text-muted">
+                                Qty: {{ item.quantity }}
+                            </small>
+
+                        </div>
+
+                        <strong>
+                            ${{ item.subtotal }}
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <strong>
+                            Total
+                        </strong>
+
+                        <strong class="text-primary fs-5">
+                            ${{ cart.total_price }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
