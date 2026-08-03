@@ -28,8 +28,24 @@ SECRET_KEY = 'django-insecure-ez^)sr2&wsdeqmssz4)yj$!i0xj4p3u)er%!539%$v+yhr%5*k
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["*"]
+import cloudinary
+import os
 
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
 
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,6 +63,8 @@ INSTALLED_APPS = [
     "orders",
     "dashboard",
     "wishlist",
+     "cloudinary",
+    "cloudinary_storage",
 ]
 
 MIDDLEWARE = [
@@ -62,9 +80,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 TEMPLATES = [
     {
@@ -129,24 +144,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
-STATIC_URL = "/static/"
-
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = BASE_DIR / "media"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)

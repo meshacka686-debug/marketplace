@@ -33,7 +33,7 @@ class Product(models.Model):
 
     quantity = models.PositiveIntegerField(default=1)
 
-    image = models.ImageField(upload_to="products/")
+    image = models.ImageField(upload_to="products/", blank=True, null=True)
 
     available = models.BooleanField(default=True)
 
