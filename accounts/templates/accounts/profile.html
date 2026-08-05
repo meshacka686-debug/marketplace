@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <div class="text-center mb-4">
+
+                        {% if profile.profile_image %}
+                            <img
+                                src="{{ profile.profile_image.url }}"
+                                alt="Profile"
+                                class="rounded-circle"
+                                width="120"
+                                height="120"
+                                style="object-fit: cover;"
+                            >
+                        {% else %}
+                            <div
+                                class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto"
+                                style="width:120px;height:120px;font-size:40px;"
+                            >
+                                {{ user.username|first|upper }}
+                            </div>
+                        {% endif %}
+
+                        <h3 class="mt-3 mb-1">
+                            {{ user.username }}
+                        </h3>
+
+                        <span class="badge bg-primary">
+                            {{ profile.get_role_display }}
+                        </span>
+
+                        {% if profile.verified %}
+                            <span class="badge bg-success">
+                                Verified
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <form method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <h5 class="mb-3">
+                            Personal Information
+                        </h5>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Username
+                                </label>
+
+                                {{ user_form.username }}
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Email
+                                </label>
+
+                                {{ user_form.email }}
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    First Name
+                                </label>
+
+                                {{ user_form.first_name }}
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Last Name
+                                </label>
+
+                                {{ user_form.last_name }}
+
+                            </div>
+
+                        </div>
+
+
+                        <hr class="my-4">
+
+
+                        <h5 class="mb-3">
+                            Contact Information
+                        </h5>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone Number
+                            </label>
+
+                            {{ profile_form.phone }}
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Address
+                            </label>
+
+                            {{ profile_form.address }}
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Profile Picture
+                            </label>
+
+                            {{ profile_form.profile_image }}
+
+                        </div>
+
+
+                        {% if profile.role == "seller" %}
+
+                            <hr class="my-4">
+
+                            <h5 class="mb-3">
+                                Seller Information
+                            </h5>
+
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Shop Name
+                                </label>
+
+                                {{ profile_form.shop_name }}
+
+                            </div>
+
+
+                            <div class="mb-4">
+
+                                <label class="form-label">
+                                    Business Description
+                                </label>
+
+                                {{ profile_form.business_description }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

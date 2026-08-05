@@ -10,23 +10,25 @@ from products.models import Product, Category
 from accounts.models import Profile
 
 
-def home(request):
+from django.shortcuts import render
+from products.models import Product, Category
 
+
+def home(request):
     products = Product.objects.filter(
         available=True
-    ).order_by("-created_at")
+    ).select_related("category", "seller").order_by("-created_at")
 
     categories = Category.objects.all()
 
     return render(
         request,
-        "home.html",
+        "dashboard/home.html",
         {
             "products": products,
             "categories": categories,
         }
     )
-
 
 @login_required
 def buyer_dashboard(request):

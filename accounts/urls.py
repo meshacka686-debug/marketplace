@@ -26,5 +26,7 @@ urlpatterns = [
         views.become_seller,
         name="become_seller",
     ),
+    path("profile/", views.profile_view, name="profile"),
+    
 
 ]
