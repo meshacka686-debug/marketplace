@@ -6,13 +6,13 @@ from products.models import Product
 class Order(models.Model):
 
     STATUS_CHOICES = (
-    ("pending", "Pending"),
-    ("processing", "Processing"),
-    ("shipped", "Shipped"),
-    ("delivered", "Delivered"),
-    ("completed", "Completed"),
-    ("cancelled", "Cancelled"),
-)
+        ("pending", "Pending"),
+        ("processing", "Processing"),
+        ("shipped", "Shipped"),
+        ("delivered", "Delivered"),
+        ("completed", "Completed"),
+        ("cancelled", "Cancelled"),
+    )
 
     user = models.ForeignKey(
         User,
@@ -25,9 +25,13 @@ class Order(models.Model):
         unique=True
     )
 
-    full_name = models.CharField(max_length=150)
+    full_name = models.CharField(
+        max_length=150
+    )
 
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(
+        max_length=20
+    )
 
     address = models.TextField()
 
@@ -68,7 +72,9 @@ class OrderItem(models.Model):
         null=True
     )
 
-    product_name = models.CharField(max_length=200)
+    product_name = models.CharField(
+        max_length=200
+    )
 
     price = models.DecimalField(
         max_digits=10,
@@ -84,3 +90,4 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product_name
+
