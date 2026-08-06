@@ -1,4 +1,3 @@
-```python
 """
 Django settings for config project.
 """

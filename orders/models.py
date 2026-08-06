@@ -14,6 +14,13 @@ class Order(models.Model):
         ("cancelled", "Cancelled"),
     )
 
+    PAYMENT_STATUS_CHOICES = (
+        ("unpaid", "Unpaid"),
+        ("pending", "Pending"),
+        ("paid", "Paid"),
+        ("failed", "Failed"),
+    )
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -44,6 +51,24 @@ class Order(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default="pending"
+    )
+
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS_CHOICES,
+        default="unpaid"
+    )
+
+    payment_reference = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        unique=True
+    )
+
+    paid_at = models.DateTimeField(
+        blank=True,
+        null=True
     )
 
     created_at = models.DateTimeField(
@@ -90,4 +115,3 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product_name
-
