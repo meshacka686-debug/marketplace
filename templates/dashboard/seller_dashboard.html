@@ -6,37 +6,50 @@
 
 <div class="container py-5">
 
-    <!-- Header -->
+    <!-- HEADER -->
+
     <div class="d-flex justify-content-between align-items-center mb-5">
 
         <div>
+
             <h2 class="fw-bold">
                 Seller Dashboard
             </h2>
 
             <p class="text-muted mb-0">
-                Manage your products and marketplace activity.
+                Manage your products, orders and sales.
             </p>
+
         </div>
 
-        <a href="{% url 'add_product' %}" class="btn btn-primary">
+        <a
+            href="{% url 'add_product' %}"
+            class="btn btn-primary">
+
             <i class="bi bi-plus-lg"></i>
             Add Product
+
         </a>
 
     </div>
 
 
-    <!-- Statistics -->
+    <!-- STATISTICS -->
+
     <div class="row g-4 mb-5">
 
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
+        <!-- PRODUCTS -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
                 <div class="card-body">
 
                     <div class="d-flex justify-content-between">
 
                         <div>
+
                             <p class="text-muted mb-1">
                                 Total Products
                             </p>
@@ -44,173 +57,366 @@
                             <h2 class="fw-bold">
                                 {{ total_products }}
                             </h2>
+
                         </div>
 
-                        <i class="bi bi-box-seam text-primary"
-                           style="font-size:40px;"></i>
+                        <i
+                            class="bi bi-box-seam text-primary"
+                            style="font-size:40px;">
+                        </i>
 
                     </div>
 
                 </div>
+
             </div>
+
         </div>
 
 
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
+        <!-- ORDERS -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
                 <div class="card-body">
 
                     <div class="d-flex justify-content-between">
 
                         <div>
+
                             <p class="text-muted mb-1">
                                 Orders
                             </p>
 
                             <h2 class="fw-bold">
-                                0
+                                {{ total_orders }}
                             </h2>
+
                         </div>
 
-                        <i class="bi bi-cart-check text-primary"
-                           style="font-size:40px;"></i>
+                        <i
+                            class="bi bi-cart-check text-primary"
+                            style="font-size:40px;">
+                        </i>
 
                     </div>
 
                 </div>
+
             </div>
+
         </div>
 
 
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
+        <!-- SALES -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
                 <div class="card-body">
 
                     <div class="d-flex justify-content-between">
 
                         <div>
+
                             <p class="text-muted mb-1">
                                 Sales
                             </p>
 
                             <h2 class="fw-bold">
-                                $0
+                                ₦{{ total_sales|floatformat:2 }}
                             </h2>
+
                         </div>
 
-                        <i class="bi bi-cash-stack text-primary"
-                           style="font-size:40px;"></i>
+                        <i
+                            class="bi bi-cash-stack text-success"
+                            style="font-size:40px;">
+                        </i>
+
+                    </div>
+
+                    <small class="text-muted">
+                        Paid orders only
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PENDING -->
+
+        <div class="col-md-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Pending
+                            </p>
+
+                            <h2 class="fw-bold">
+                                {{ pending_orders }}
+                            </h2>
+
+                        </div>
+
+                        <i
+                            class="bi bi-clock text-warning"
+                            style="font-size:40px;">
+                        </i>
 
                     </div>
 
                 </div>
+
             </div>
+
         </div>
 
     </div>
 
 
-    <!-- Products -->
-    <div class="card border-0 shadow-sm">
+    <!-- ORDER STATUS -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Processing Orders
+                    </h6>
+
+                    <h3 class="fw-bold">
+                        {{ processing_orders }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Completed Orders
+                    </h6>
+
+                    <h3 class="fw-bold">
+                        {{ completed_orders }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Orders
+                    </h6>
+
+                    <h3 class="fw-bold">
+                        {{ total_orders }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT ORDERS -->
+
+    <div class="card border-0 shadow-sm mb-5">
 
         <div class="card-body p-4">
 
             <div class="d-flex justify-content-between align-items-center mb-4">
 
                 <h4 class="fw-bold mb-0">
-                    My Products
+                    Recent Orders
                 </h4>
-
-                <a href="{% url 'add_product' %}"
-                   class="btn btn-primary btn-sm">
-
-                    <i class="bi bi-plus-lg"></i>
-                    Add Product
-
-                </a>
 
             </div>
 
-            {% if products %}
+
+            {% if recent_orders %}
 
             <div class="table-responsive">
 
                 <table class="table align-middle">
 
                     <thead>
+
                         <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Stock</th>
+
+                            <th>Order</th>
+
+                            <th>Customer</th>
+
+                            <th>Date</th>
+
+                            <th>Amount</th>
+
+                            <th>Payment</th>
+
                             <th>Status</th>
-                            <th>Actions</th>
+
                         </tr>
+
                     </thead>
+
 
                     <tbody>
 
-                    {% for product in products %}
+                    {% for order in recent_orders %}
 
                         <tr>
 
                             <td>
 
-                                <div class="d-flex align-items-center">
-
-                                    {% if product.image %}
-                                    <img src="{{ product.image.url }}"
-                                         width="55"
-                                         height="55"
-                                         class="rounded me-3"
-                                         style="object-fit:cover;">
-                                    {% endif %}
-
-                                    <strong>{{ product.name }}</strong>
-
-                                </div>
+                                <strong>
+                                    {{ order.order_number }}
+                                </strong>
 
                             </td>
 
+
                             <td>
-                                ${{ product.price }}
+
+                                {{ order.full_name }}
+
                             </td>
 
+
                             <td>
-                                {{ product.quantity }}
+
+                                {{ order.created_at|date:"M d, Y" }}
+
                             </td>
 
+
                             <td>
 
-                                {% if product.available %}
+                                {% with seller_total=0 %}
+
+                                    {% for item in order.items.all %}
+
+                                        {% if item.product.seller_id == request.user.id %}
+
+                                            ₦{{ item.subtotal|floatformat:2 }}
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                {% endwith %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if order.payment_status == "paid" %}
+
                                     <span class="badge bg-success">
-                                        Available
+                                        Paid
                                     </span>
-                                {% else %}
+
+                                {% elif order.payment_status == "pending" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                {% elif order.payment_status == "failed" %}
+
                                     <span class="badge bg-danger">
-                                        Unavailable
+                                        Failed
                                     </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        Unpaid
+                                    </span>
+
                                 {% endif %}
 
                             </td>
 
+
                             <td>
 
-                                <a href="{% url 'edit_product' product.pk %}"
-   class="btn btn-sm btn-outline-primary">
+                                {% if order.status == "pending" %}
 
-    <i class="bi bi-pencil"></i>
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
 
-    Edit
+                                {% elif order.status == "processing" %}
 
-</a>
-<a href="{% url 'delete_product' product.pk %}"
-   class="btn btn-sm btn-outline-danger">
+                                    <span class="badge bg-primary">
+                                        Processing
+                                    </span>
 
-    <i class="bi bi-trash"></i>
+                                {% elif order.status == "shipped" %}
 
-    Delete
+                                    <span class="badge bg-info">
+                                        Shipped
+                                    </span>
 
-</a>
+                                {% elif order.status == "delivered" %}
+
+                                    <span class="badge bg-success">
+                                        Delivered
+                                    </span>
+
+                                {% elif order.status == "completed" %}
+
+                                    <span class="badge bg-success">
+                                        Completed
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger">
+                                        {{ order.status|title }}
+                                    </span>
+
+                                {% endif %}
 
                             </td>
 
@@ -228,8 +434,173 @@
 
             <div class="text-center py-5">
 
-                <i class="bi bi-box-seam"
-                   style="font-size:60px;"></i>
+                <i
+                    class="bi bi-cart-x"
+                    style="font-size:60px;">
+                </i>
+
+                <h5 class="fw-bold mt-3">
+                    No orders yet
+                </h5>
+
+                <p class="text-muted">
+                    Orders containing your products will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- MY PRODUCTS -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h4 class="fw-bold mb-0">
+                    My Products
+                </h4>
+
+                <a
+                    href="{% url 'add_product' %}"
+                    class="btn btn-primary btn-sm">
+
+                    <i class="bi bi-plus-lg"></i>
+                    Add Product
+
+                </a>
+
+            </div>
+
+
+            {% if products %}
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for product in products %}
+
+                        <tr>
+
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    {% if product.image %}
+
+                                    <img
+                                        src="{{ product.image.url }}"
+                                        width="55"
+                                        height="55"
+                                        class="rounded me-3"
+                                        style="object-fit:cover;">
+
+                                    {% endif %}
+
+                                    <strong>
+                                        {{ product.name }}
+                                    </strong>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+                                ₦{{ product.price|floatformat:2 }}
+                            </td>
+
+
+                            <td>
+                                {{ product.quantity }}
+                            </td>
+
+
+                            <td>
+
+                                {% if product.available %}
+
+                                    <span class="badge bg-success">
+                                        Available
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger">
+                                        Unavailable
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <a
+                                    href="{% url 'edit_product' product.pk %}"
+                                    class="btn btn-sm btn-outline-primary">
+
+                                    <i class="bi bi-pencil"></i>
+                                    Edit
+
+                                </a>
+
+
+                                <a
+                                    href="{% url 'delete_product' product.pk %}"
+                                    class="btn btn-sm btn-outline-danger">
+
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <i
+                    class="bi bi-box-seam"
+                    style="font-size:60px;">
+                </i>
 
                 <h5 class="fw-bold mt-3">
                     You don't have any products yet.
@@ -239,8 +610,9 @@
                     Add your first product to start selling.
                 </p>
 
-                <a href="{% url 'add_product' %}"
-                   class="btn btn-primary">
+                <a
+                    href="{% url 'add_product' %}"
+                    class="btn btn-primary">
 
                     Add Your First Product
 
