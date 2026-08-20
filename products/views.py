@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-
-from .models import Product, Category
-from .forms import ProductForm
-
+from django.db import models
+from django.db.models import Avg
+from .models import Product, Category, ProductReview
+from .forms import ProductForm, ProductReviewForm
 
 def product_list(request):
 
@@ -34,9 +34,20 @@ def product_list(request):
 def product_detail(request, pk):
 
     product = get_object_or_404(
-        Product,
+        Product.objects.select_related(
+            "category",
+            "seller"
+        ),
         pk=pk
     )
+
+    reviews = product.reviews.select_related(
+        "user"
+    ).all()
+
+    average_rating = reviews.aggregate(
+        average=Avg("rating")
+    )["average"]
 
     related_products = Product.objects.filter(
         category=product.category,
@@ -50,10 +61,75 @@ def product_detail(request, pk):
         "products/product_detail.html",
         {
             "product": product,
+            "reviews": reviews,
+            "average_rating": average_rating,
             "related_products": related_products,
         }
     )
+@login_required
+def add_review(request, pk):
 
+    product = get_object_or_404(
+        Product,
+        pk=pk
+    )
+
+    # Check if this user already reviewed this product
+    existing_review = ProductReview.objects.filter(
+        product=product,
+        user=request.user
+    ).first()
+
+    if existing_review:
+        messages.warning(
+            request,
+            "You have already reviewed this product."
+        )
+
+        return redirect(
+            "product_detail",
+            pk=product.pk
+        )
+
+    if request.method == "POST":
+
+        form = ProductReviewForm(
+            request.POST
+        )
+
+        if form.is_valid():
+
+            review = form.save(
+                commit=False
+            )
+
+            review.product = product
+            review.user = request.user
+
+            review.save()
+
+            messages.success(
+                request,
+                "Thank you! Your review has been added."
+            )
+
+            return redirect(
+                "product_detail",
+                pk=product.pk
+            )
+
+    else:
+
+        form = ProductReviewForm()
+
+    return render(
+        request,
+        "products/add_review.html",
+        {
+            "form": form,
+            "product": product,
+        }
+    )
 
 # ==================================================
 # PRODUCT MANAGEMENT

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db.models import Sum
+from django.db.models import Sum, Avg, Count
 
 from cart.models import Cart
 from orders.models import Order, OrderItem
@@ -11,12 +11,16 @@ from accounts.models import Profile
 
 def home(request):
 
-    products = Product.objects.filter(
-        available=True
-    ).select_related(
-        "category",
-        "seller"
-    ).order_by("-created_at")
+    products = (
+        Product.objects
+        .filter(available=True)
+        .select_related("category", "seller")
+        .annotate(
+            average_rating=Avg("reviews__rating"),
+            review_count=Count("reviews")
+        )
+        .order_by("-created_at")
+    )
 
     categories = Category.objects.all()
 
@@ -56,22 +60,15 @@ def buyer_dashboard(request):
 @login_required
 def seller_dashboard(request):
 
-    # Make sure user has a profile
     if not hasattr(request.user, "profile"):
         return redirect("dashboard")
 
-    # Only sellers can access this dashboard
     if request.user.profile.role != "seller":
         return redirect("dashboard")
 
-    # Seller's products
     products = Product.objects.filter(
         seller=request.user
     ).order_by("-created_at")
-
-    # --------------------------------------------------
-    # SELLER ORDER ITEMS
-    # --------------------------------------------------
 
     seller_items = OrderItem.objects.filter(
         product__seller=request.user
@@ -83,26 +80,13 @@ def seller_dashboard(request):
         "-order__created_at"
     )
 
-    # --------------------------------------------------
-    # ORDERS CONTAINING THIS SELLER'S PRODUCTS
-    # --------------------------------------------------
-
     seller_orders = Order.objects.filter(
         items__product__seller=request.user
     ).distinct().order_by(
         "-created_at"
     )
 
-    # --------------------------------------------------
-    # TOTAL ORDERS
-    # --------------------------------------------------
-
     total_orders = seller_orders.count()
-
-    # --------------------------------------------------
-    # PAID SALES
-    # --------------------------------------------------
-    # Only count money from successfully paid orders.
 
     sales_result = seller_items.filter(
         order__payment_status="paid"
@@ -112,33 +96,17 @@ def seller_dashboard(request):
 
     total_sales = sales_result["total"] or 0
 
-    # --------------------------------------------------
-    # PENDING ORDERS
-    # --------------------------------------------------
-
     pending_orders = seller_orders.filter(
         status="pending"
     ).count()
-
-    # --------------------------------------------------
-    # PROCESSING ORDERS
-    # --------------------------------------------------
 
     processing_orders = seller_orders.filter(
         status="processing"
     ).count()
 
-    # --------------------------------------------------
-    # COMPLETED ORDERS
-    # --------------------------------------------------
-
     completed_orders = seller_orders.filter(
         status="completed"
     ).count()
-
-    # --------------------------------------------------
-    # RECENT ORDERS
-    # --------------------------------------------------
 
     recent_orders = seller_orders[:10]
 
@@ -147,21 +115,13 @@ def seller_dashboard(request):
         "dashboard/seller_dashboard.html",
         {
             "products": products,
-
             "total_products": products.count(),
-
             "seller_orders": seller_orders,
-
             "recent_orders": recent_orders,
-
             "total_orders": total_orders,
-
             "total_sales": total_sales,
-
             "pending_orders": pending_orders,
-
             "processing_orders": processing_orders,
-
             "completed_orders": completed_orders,
         }
     )
