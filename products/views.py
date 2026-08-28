@@ -6,17 +6,41 @@ from django.db.models import Avg
 from .models import Product, Category, ProductReview
 from .forms import ProductForm, ProductReviewForm
 
+
 def product_list(request):
 
     products = Product.objects.filter(
         available=True
+    ).select_related(
+        "category",
+        "seller"
     )
 
     categories = Category.objects.all()
 
+    # ------------------------------------------
+    # SEARCH
+    # ------------------------------------------
+
+    search_query = request.GET.get("q", "").strip()
+
+    if search_query:
+
+        products = products.filter(
+            models.Q(name__icontains=search_query)
+            | models.Q(description__icontains=search_query)
+            | models.Q(category__name__icontains=search_query)
+            | models.Q(seller__username__icontains=search_query)
+        )
+
+    # ------------------------------------------
+    # CATEGORY FILTER
+    # ------------------------------------------
+
     category_id = request.GET.get("category")
 
     if category_id:
+
         products = products.filter(
             category_id=category_id
         )
@@ -27,8 +51,11 @@ def product_list(request):
         {
             "products": products,
             "categories": categories,
+            "search_query": search_query,
         }
     )
+
+
 
 
 def product_detail(request, pk):

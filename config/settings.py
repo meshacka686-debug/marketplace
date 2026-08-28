@@ -216,17 +216,23 @@ WSGI_APPLICATION = "config.wsgi.application"
 # DATABASE
 # --------------------------------------------------
 
-DATABASES = {
-    "default": dj_database_url.config(
+if os.getenv("DATABASE_URL") and not DEBUG:
 
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
 
-        conn_max_age=600,
+else:
 
-        conn_health_checks=True,
-    )
-}
-
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # --------------------------------------------------
 # PASSWORD VALIDATION
@@ -354,4 +360,35 @@ if not DEBUG:
 # --------------------------------------------------
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# --------------------------------------------------
+# EMAIL
+# --------------------------------------------------
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = os.getenv(
+    "EMAIL_HOST",
+    "smtp.gmail.com"
+)
+
+EMAIL_PORT = int(os.getenv(
+    "EMAIL_PORT",
+    "587"
+))
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = os.getenv(
+    "EMAIL_HOST_USER",
+    ""
+)
+
+EMAIL_HOST_PASSWORD = os.getenv(
+    "EMAIL_HOST_PASSWORD",
+    ""
+)
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL",
+    EMAIL_HOST_USER
+)

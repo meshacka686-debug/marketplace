@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Products{% endblock %}
@@ -6,79 +7,202 @@
 
 <div class="container py-5">
 
+    <!-- SEARCH -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form method="GET" action="{% url 'products' %}">
+
+                <div class="input-group input-group-lg">
+
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ search_query }}"
+                        class="form-control"
+                        placeholder="Search products, categories or sellers..."
+                    >
+
+                    {% if request.GET.category %}
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ request.GET.category }}"
+                    >
+                    {% endif %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="bi bi-search"></i>
+                        Search
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
     <div class="row">
 
-        <!-- Sidebar -->
+        <!-- SIDEBAR -->
 
-        <div class="col-lg-3">
+        <div class="col-lg-3 mb-4">
 
             <div class="card shadow-sm">
 
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-primary text-white fw-bold">
 
+                    <i class="bi bi-grid"></i>
                     Categories
 
                 </div>
-<div class="list-group list-group-flush">
 
-    <a href="{% url 'products' %}"
-       class="list-group-item list-group-item-action fw-bold">
+                <div class="list-group list-group-flush">
 
-        🛍 All Products
+                    <!-- ALL PRODUCTS -->
 
-    </a>
+                    <a
+                        href="{% url 'products' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}"
+                        class="list-group-item list-group-item-action fw-bold">
 
-    {% for category in categories %}
+                        🛍 All Products
 
-    <a href="{% url 'products' %}?category={{ category.id }}"
-       class="list-group-item list-group-item-action">
+                    </a>
 
-        {{ category.name }}
 
-    </a>
+                    <!-- CATEGORIES -->
 
-    {% empty %}
+                    {% for category in categories %}
 
-    <div class="list-group-item">
+                    <a
+                        href="{% url 'products' %}?category={{ category.id }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                        class="list-group-item list-group-item-action">
 
-        No Categories
+                        {{ category.name }}
 
-    </div>
+                    </a>
 
-    {% endfor %}
+                    {% empty %}
 
-</div>
+                    <div class="list-group-item">
+
+                        No Categories
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
 
             </div>
 
         </div>
 
-        <!-- Products -->
+
+        <!-- PRODUCTS -->
 
         <div class="col-lg-9">
+
+            <!-- SEARCH RESULT INFORMATION -->
+
+            {% if search_query %}
+
+            <div class="mb-4">
+
+                <h4 class="fw-bold">
+
+                    Search results for "{{ search_query }}"
+
+                </h4>
+
+                <p class="text-muted">
+
+                    {{ products|length }}
+                    product{{ products|length|pluralize }}
+                    found.
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
 
             <div class="row">
 
                 {% for product in products %}
 
-                <div class="col-lg-4 mb-4">
+                <div class="col-lg-4 col-md-6 mb-4">
 
-                    <div class="card h-100 shadow-sm">
+                    <div class="card h-100 shadow-sm border-0">
 
-                        {% if product.image %}
+                        <!-- PRODUCT IMAGE -->
 
-                        <img src="{{ product.image.url }}"
-                             class="card-img-top">
+                        <a
+                            href="{% url 'product_detail' product.id %}"
+                            class="text-decoration-none">
 
-                        {% endif %}
+                            {% if product.image %}
 
-                        <div class="card-body">
+                            <img
+                                src="{{ product.image.url }}"
+                                class="card-img-top"
+                                style="height:220px; object-fit:cover;"
+                                alt="{{ product.name }}">
 
-                            <h5>
+                            {% else %}
 
-                                {{ product.name }}
+                            <div
+                                class="d-flex align-items-center justify-content-center bg-light"
+                                style="height:220px;">
+
+                                <i
+                                    class="bi bi-image text-muted"
+                                    style="font-size:60px;">
+                                </i>
+
+                            </div>
+
+                            {% endif %}
+
+                        </a>
+
+
+                        <div class="card-body d-flex flex-column">
+
+                            <!-- CATEGORY -->
+
+                            <small class="text-muted">
+
+                                <i class="bi bi-tag"></i>
+
+                                {{ product.category.name }}
+
+                            </small>
+
+
+                            <!-- PRODUCT NAME -->
+
+                            <h5 class="mt-2 fw-bold">
+
+                                <a
+                                    href="{% url 'product_detail' product.id %}"
+                                    class="text-dark text-decoration-none">
+
+                                    {{ product.name }}
+
+                                </a>
 
                             </h5>
+
+
+                            <!-- DESCRIPTION -->
 
                             <p class="text-muted">
 
@@ -86,29 +210,56 @@
 
                             </p>
 
-                            <h4 class="text-primary">
 
-                                ${{ product.price }}
+                            <!-- SELLER -->
+
+                            <small class="text-muted mb-2">
+
+                                <i class="bi bi-person"></i>
+
+                                Seller:
+                                {{ product.seller.username }}
+
+                            </small>
+
+
+                            <!-- PRICE -->
+
+                            <h4 class="text-primary fw-bold">
+
+                                ₦{{ product.price }}
 
                             </h4>
-<a href="{% url 'product_detail' product.id %}"
-   class="btn btn-primary w-100">
-    View Product
-</a>
+
+
+                            <!-- BUTTONS -->
+
+                            <div class="mt-auto">
+
+                                <a
+                                    href="{% url 'product_detail' product.id %}"
+                                    class="btn btn-outline-primary w-100 mb-2">
+
+                                    <i class="bi bi-eye"></i>
+
+                                    View Product
+
+                                </a>
+
+
+                                <a
+                                    href="{% url 'add_to_cart' product.id %}"
+                                    class="btn btn-primary w-100">
+
+                                    <i class="bi bi-cart-plus"></i>
+
+                                    Add to Cart
+
+                                </a>
+
+                            </div>
 
                         </div>
-                        
-<a
-    href="{% url 'add_to_cart' product.id %}"
-    class="btn btn-primary w-100">
-
-    <i class="bi bi-cart-plus"></i>
-
-    Add to Cart
-
-</a>
-
-
 
                     </div>
 
@@ -116,11 +267,55 @@
 
                 {% empty %}
 
+                <!-- NO RESULTS -->
+
                 <div class="col-12">
 
-                    <div class="alert alert-info">
+                    <div class="card border-0 shadow-sm">
 
-                        No products available yet.
+                        <div class="card-body text-center py-5">
+
+                            <i
+                                class="bi bi-search text-muted"
+                                style="font-size:70px;">
+                            </i>
+
+                            {% if search_query %}
+
+                            <h4 class="fw-bold mt-3">
+
+                                No products found
+
+                            </h4>
+
+                            <p class="text-muted">
+
+                                We couldn't find any products matching
+                                "{{ search_query }}".
+
+                            </p>
+
+                            <a
+                                href="{% url 'products' %}"
+                                class="btn btn-primary">
+
+                                <i class="bi bi-arrow-left"></i>
+
+                                View All Products
+
+                            </a>
+
+                            {% else %}
+
+                            <h4 class="fw-bold mt-3">
+
+                                No products available yet.
+
+                            </h4>
+
+                            {% endif %}
+
+                        </div>
 
                     </div>
 
@@ -137,3 +332,4 @@
 </div>
 
 {% endblock %}
+

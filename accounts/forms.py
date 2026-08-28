@@ -7,6 +7,26 @@ from .models import Profile
 
 class RegisterForm(UserCreationForm):
 
+    first_name = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "First name",
+            }
+        )
+    )
+
+    last_name = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Last name",
+            }
+        )
+    )
+
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(
@@ -50,6 +70,8 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = [
+            "first_name",
+            "last_name",
             "username",
             "email",
             "password1",
@@ -57,6 +79,7 @@ class RegisterForm(UserCreationForm):
         ]
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
 
         self.fields["username"].widget.attrs.update({

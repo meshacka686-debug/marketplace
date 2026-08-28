@@ -14,19 +14,38 @@ def register(request):
 
         if form.is_valid():
 
-            user = form.save()
+            user = form.save(commit=False)
+
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.email = form.cleaned_data["email"]
+
+            user.save()
 
             profile = user.profile
+
             profile.role = form.cleaned_data["role"]
             profile.phone = form.cleaned_data["phone"]
             profile.address = form.cleaned_data["address"]
+
             profile.save()
 
             login(request, user)
 
+            messages.success(
+                request,
+                "Account created successfully!"
+            )
+
             return redirect("/")
 
+        messages.error(
+            request,
+            "Please correct the errors below."
+        )
+
     else:
+
         form = RegisterForm()
 
     return render(
@@ -36,7 +55,6 @@ def register(request):
             "form": form
         }
     )
-
 
 def login_view(request):
 
